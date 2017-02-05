@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Created by Yariki on 1/29/2017.
  */
 @Controller
-@RequestMapping(value = "/email")
+@RequestMapping(value = "/parse")
 public class OFEmailController {
 
     private final IOFItemsReader reader = new OFItemsReader();

@@ -57,7 +57,7 @@ public class OFDataParse extends OFDataProcess {
             String parsedContent = "";
             byte[] byteBuffer = Base64.decode(attachment.getContent());
             parsedContent = tika.parseToString(new ByteInputStream(byteBuffer,byteBuffer.length), new Metadata());
-            attachment.setContent(parsedContent);
+            attachment.setAnalyzedcontent(parsedContent);
         }catch (Exception ex){
 
         }
