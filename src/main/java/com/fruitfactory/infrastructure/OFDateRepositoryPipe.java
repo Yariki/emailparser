@@ -2,6 +2,7 @@ package com.fruitfactory.infrastructure;
 
 import com.fruitfactory.interfaces.IOFDataRepositoryPipe;
 import com.fruitfactory.models.OFItemsContainer;
+import org.apache.log4j.Logger;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -14,6 +15,9 @@ public class OFDateRepositoryPipe implements IOFDataRepositoryPipe {
     private final Object syncObject = new Object();
     private volatile boolean available = false;
 
+    private final Logger logger = Logger.getLogger(OFDateRepositoryPipe.class);
+
+
     public OFDateRepositoryPipe() {
         dataContainer = new LinkedBlockingQueue<>();
     }
@@ -25,9 +29,9 @@ public class OFDateRepositoryPipe implements IOFDataRepositoryPipe {
             available = true;
             syncObject.notifyAll();
         }catch(InterruptedException ie){
-
+            logger.error(ie.getMessage());
         }catch (Exception ex){
-
+            logger.error(ex.getMessage());
         }
     }
 
@@ -42,7 +46,7 @@ public class OFDateRepositoryPipe implements IOFDataRepositoryPipe {
             try {
                 syncObject.wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
         OFItemsContainer container = dataContainer.poll();

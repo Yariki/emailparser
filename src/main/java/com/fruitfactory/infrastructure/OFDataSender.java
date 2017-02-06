@@ -94,7 +94,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
             index(OFMetadataTags.INDEX_TYPE_CONTACT,json.toString());
 
         }catch (Exception ex){
-            // TODO
+            getLogger().error(ex.getMessage());
         }
     }
 
@@ -108,7 +108,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
                 saveAttachment(attachment);
             }
         }catch (Exception ex){
-            // TODO
+            getLogger().error(ex.getMessage());
         }
     }
 
@@ -135,7 +135,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
             index(OFMetadataTags.INDEX_TYPE_ATTACHMENT,json.toString());
 
         }catch(Exception e){
-            // TODO
+            getLogger().error(e.getMessage());
         }
     }
 
@@ -195,7 +195,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
             index(OFMetadataTags.INDEX_TYPE_EMAIL_MESSAGE,objectJson.toString());
 
         }catch (Exception ex){
-            //TODO
+            getLogger().error(ex.getMessage());
         }
     }
 
@@ -222,17 +222,17 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
             HttpEntity entity = new NStringEntity(json, ContentType.APPLICATION_JSON);
             client.performRequestAsync("POST",path,null,entity,this);
         }catch (Exception ex){
-            // TODO
+            getLogger().error(ex.getMessage());
         }
     }
 
     @Override
     public void onSuccess(Response response) {
-        // TODO: logging
+        getLogger().info(String.format("Index Entity:  %s",response.getEntity()));
     }
 
     @Override
     public void onFailure(Exception e) {
-        //TODO: log
+        getLogger().error(e.getMessage());
     }
 }

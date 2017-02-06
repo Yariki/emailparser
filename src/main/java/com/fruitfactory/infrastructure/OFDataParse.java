@@ -32,7 +32,7 @@ public class OFDataParse extends OFDataProcess {
             processAttachments(container);
             dataTarget.pushData(container);
         }catch (Exception ex){
-
+            getLogger().error(ex.getMessage());
         }
     }
 
@@ -45,7 +45,7 @@ public class OFDataParse extends OFDataProcess {
                 processAttachment(attachment);
             }
         }catch (Exception ex){
-
+            getLogger().error(ex.getMessage());
         }
     }
 
@@ -59,7 +59,7 @@ public class OFDataParse extends OFDataProcess {
             parsedContent = tika.parseToString(new ByteInputStream(byteBuffer,byteBuffer.length), new Metadata());
             attachment.setAnalyzedcontent(parsedContent);
         }catch (Exception ex){
-
+            getLogger().error(ex.getMessage());
         }
     }
 
@@ -77,12 +77,12 @@ public class OFDataParse extends OFDataProcess {
             try {
                 body = new String(Base64.decode(email.getContent()));
             }catch (Exception ex){
-
+                getLogger().error(ex.getMessage());
             }
             try {
                 htmlBody = new String(Base64.decode(email.getHtmlcontent()));
             }catch(Exception ex){
-
+                getLogger().error(ex.getMessage());
             }
             String analyzedContent = null;
 
@@ -96,7 +96,7 @@ public class OFDataParse extends OFDataProcess {
             email.setAnalyzedcontent(analyzedContent);
 
         }catch (Exception ex){
-
+            getLogger().error(ex.getMessage());
         }
     }
 
