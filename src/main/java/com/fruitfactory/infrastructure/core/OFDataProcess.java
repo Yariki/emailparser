@@ -28,7 +28,7 @@ public abstract class OFDataProcess  extends Thread  implements IOFDataProcessTh
                 container = dataSource.popData();
                 processData(container);
             }catch(Exception ex){
-                logger.error(ex.getMessage());
+                logger.error(ex.toString());
             }
         }
     }

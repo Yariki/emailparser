@@ -16,7 +16,9 @@ import org.jglue.fluentjson.JsonArrayBuilder;
 import org.jglue.fluentjson.JsonBuilderFactory;
 import org.jglue.fluentjson.JsonObjectBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -94,7 +96,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
             index(OFMetadataTags.INDEX_TYPE_CONTACT,json.toString());
 
         }catch (Exception ex){
-            getLogger().error(ex.getMessage());
+            getLogger().error(ex.toString());
         }
     }
 
@@ -108,7 +110,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
                 saveAttachment(attachment);
             }
         }catch (Exception ex){
-            getLogger().error(ex.getMessage());
+            getLogger().error(ex.toString());
         }
     }
 
@@ -135,7 +137,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
             index(OFMetadataTags.INDEX_TYPE_ATTACHMENT,json.toString());
 
         }catch(Exception e){
-            getLogger().error(e.getMessage());
+            getLogger().error(e.toString());
         }
     }
 
@@ -153,8 +155,8 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
                     .add(OFMetadataTags.Email.FOLDER, email.getFolder())
                     .add(OFMetadataTags.Email.STORAGE_NAME, email.getStoragename())
                     .add(OFMetadataTags.Email.FOLDER_MESSAGE_STORE_ID_PART, email.getFoldermessagestoreidpart())
-                    .add(OFMetadataTags.Email.DATE_CREATED, String.valueOf(email.getDatecreated()))
-                    .add(OFMetadataTags.Email.DATE_RECEIVED, String.valueOf(email.getDatereceived()))
+                    .add(OFMetadataTags.Email.DATE_CREATED, formatDate(email.getDatecreated()))
+                    .add(OFMetadataTags.Email.DATE_RECEIVED, formatDate(email.getDatereceived()))
                     .add(OFMetadataTags.Email.SIZE, email.getSize())
                     .add(OFMetadataTags.Email.CONVERSATION_ID, email.getConversationid())
                     .add(OFMetadataTags.Email.CONVERSATION_INDEX, email.getConversationindex())
@@ -195,8 +197,12 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
             index(OFMetadataTags.INDEX_TYPE_EMAIL_MESSAGE,objectJson.toString());
 
         }catch (Exception ex){
-            getLogger().error(ex.getMessage());
+            getLogger().error(ex.toString());
         }
+    }
+
+    private String formatDate(Date date){
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(date);
     }
 
     private void AddArrayOfEmail(JsonObjectBuilder builder, List<OFRecipient> list, String objectName,String nameTag, String addresssTag,String addressTypeTag){
@@ -220,9 +226,9 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
         try {
             String path = String.format("/%s/%s",OFMetadataTags.INDEX_NAME,type);
             HttpEntity entity = new NStringEntity(json, ContentType.APPLICATION_JSON);
-            client.performRequestAsync("POST",path,null,entity,this);
+            client.performRequestAsync("POST",path,Collections.<String, String>emptyMap(),entity,this);
         }catch (Exception ex){
-            getLogger().error(ex.getMessage());
+            getLogger().error(ex.toString());
         }
     }
 
