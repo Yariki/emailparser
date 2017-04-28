@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -81,7 +80,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
                     .add(OFMetadataTags.Contact.ITEM_HOME_ADDRESS, contact.getHomeaddress())
                     .add(OFMetadataTags.Contact.ITEM_WORK_ADDRESS, contact.getWorkaddress())
                     .add(OFMetadataTags.Contact.ITEM_OTHER_ADDRESS, contact.getOtheraddress())
-                    .add(OFMetadataTags.Contact.ITEM_BIRTHDAY, String.valueOf(contact.getBirthday()))
+                    .add(OFMetadataTags.Contact.ITEM_BIRTHDAY,  formatDate(contact.getBirthday()))
                     .add(OFMetadataTags.Contact.ENTRY_ID, contact.getEntryid())
                     .add(OFMetadataTags.Contact.ADDRESS_TYPE,contact.getAddresstype())
                     .add(OFMetadataTags.Contact.ITEM_FIRST_NAME_SUGGEST, contact.getFirstname())
@@ -128,7 +127,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
                     .add(OFMetadataTags.Attachment.CONTENT, attachment.getContent())
                     .add(OFMetadataTags.Attachment.EMAIL_ID, attachment.getEmailid())
                     .add(OFMetadataTags.Attachment.ENTRYID, attachment.getEntryid())
-                    .add(OFMetadataTags.Attachment.CREATED_DATE,String.valueOf(attachment.getDatecreated()))
+                    .add(OFMetadataTags.Attachment.CREATED_DATE,formatDate(attachment.getDatecreated()))
                     .add(OFMetadataTags.Attachment.OUTLOOK_EMAIL_ID, attachment.getOutlookemailid())
                     .add(OFMetadataTags.Attachment.FILENAME_SUGGEST,attachment.getFilename())
                     .add(OFMetadataTags.Attachment.STORE_ID,attachment.getStoreid())
@@ -183,10 +182,10 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
                         email.getAttachments()) {
                     JsonObjectBuilder object = array.addObject();
                     object
-                            .add(OFMetadataTags.Email.Attachments.FILENAME,attachment.getFileName())
+                            .add(OFMetadataTags.Email.Attachments.FILENAME,attachment.getFilename())
                             .add(OFMetadataTags.Email.Attachments.PATH,attachment.getPath())
                             .add(OFMetadataTags.Email.Attachments.SIZE,attachment.getSize())
-                            .add(OFMetadataTags.Email.Attachments.MIME_TAG,attachment.getMimeTag())
+                            .add(OFMetadataTags.Email.Attachments.MIME_TAG,attachment.getMimetag())
                             .end();
                 }
                 array.end();
@@ -202,7 +201,7 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
     }
 
     private String formatDate(Date date){
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(date);
+        return date == null ? null : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(date);
     }
 
     private void AddArrayOfEmail(JsonObjectBuilder builder, List<OFRecipient> list, String objectName,String nameTag, String addresssTag,String addressTypeTag){
@@ -239,6 +238,6 @@ public class OFDataSender extends OFDataProcess implements ResponseListener {
 
     @Override
     public void onFailure(Exception e) {
-        getLogger().error(e.getMessage());
+        getLogger().error(String.format("Index Error: %s",  e.getMessage()));
     }
 }
